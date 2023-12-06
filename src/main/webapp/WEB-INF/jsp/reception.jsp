@@ -10,6 +10,7 @@
 <ul>
     <li><a href="LogoutServlet">ログアウト</a></li>
     <li><a href="PwChangeServlet">パスワードの変更</a></li>
+    <li><a href="PatientRegistrationServlet">患者を登録する</a></li>
 </ul>
 </body>
 </html>
