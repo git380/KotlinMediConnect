@@ -12,6 +12,7 @@
     <li><a href="PwChangeServlet">パスワードの変更</a></li>
     <li><a href="PatientRegistrationServlet">患者を登録する</a></li>
     <li><a href="PatientAllServlet">患者の保険情報の変更</a></li>
+    <li><a href="PatientExpirationServlet">保険証期限確認</a></li>
 </ul>
 </body>
 </html>
