@@ -8,6 +8,8 @@
 </head>
 <body>
 <p>ようこそ<c:out value="${empId}"/>さん</p>
-<a href="WelcomeServlet">トップへ</a>
+<form action="WelcomeServlet" method="post">
+    <input type="submit" value="トップへ">
+</form>
 </body>
 </html>

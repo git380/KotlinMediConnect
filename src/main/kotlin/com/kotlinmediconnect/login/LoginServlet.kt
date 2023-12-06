@@ -21,19 +21,21 @@ class LoginServlet : HttpServlet() {
     override fun doPost(request: HttpServletRequest, response: HttpServletResponse) {
         request.characterEncoding = "UTF-8"
         val empId = request.getParameter("empId")
-        if (findByLogin(empId, request.getParameter("empPasswd"))) {
+        val account = findByLogin(empId, request.getParameter("empPasswd"))
+        if (account != null) {
             request.session.setAttribute("empId", empId)
+            request.session.setAttribute("emprole", account.empRole)
             request.getRequestDispatcher("/WEB-INF/jsp/login/loginOK.jsp").forward(request, response)
         } else {
             request.getRequestDispatcher("/WEB-INF/jsp/login/error.jsp").forward(request, response)
         }
     }
 
-    private fun findByLogin(empId:String, empPasswd:String): Boolean {
+    private fun findByLogin(empId: String, empPasswd: String): Account? {
         var account: Account? = null
         try {
             DriverManager.getConnection("jdbc:mysql://localhost/r4a105", "r4a105", "password").use { conn ->
-                val pStmt = conn.prepareStatement("SELECT * FROM employee WHERE empid = ? AND emppasswd = ? AND emprole = 0")
+                val pStmt = conn.prepareStatement("SELECT * FROM employee WHERE empid = ? AND emppasswd = ?")
                 pStmt.setString(1, empId)
                 pStmt.setString(2, SaltUserPassword().getDigest(empId, empPasswd))
                 val rs = pStmt.executeQuery()
@@ -49,8 +51,8 @@ class LoginServlet : HttpServlet() {
             }
         } catch (e: SQLException) {
             e.printStackTrace()
-            return false
+            return null
         }
-        return account != null
+        return account
     }
 }
