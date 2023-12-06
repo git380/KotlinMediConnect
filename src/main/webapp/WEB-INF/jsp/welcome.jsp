@@ -15,6 +15,7 @@
     </c:if>
     <c:if test="${not empty sessionScope.empId}">
         <li><a href="LogoutServlet">ログアウト</a></li>
+        <li><a href="PwChangeServlet">自分のパスワードの変更</a></li>
     </c:if>
 </ul>
 </body>
