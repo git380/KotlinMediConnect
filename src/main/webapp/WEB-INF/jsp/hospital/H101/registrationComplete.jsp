@@ -7,6 +7,6 @@
 </head>
 <body>
 <p>登録が完了しました</p>
-<a href="/Kadai1Administrator/WelcomeServlet">トップへ</a>
+<a href="WelcomeServlet">トップへ</a>
 </body>
 </html>

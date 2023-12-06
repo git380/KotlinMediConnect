@@ -11,45 +11,39 @@ import javax.servlet.http.HttpServlet
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
-
 @WebServlet("/RegisterServlet")
 class RegisterServlet : HttpServlet() {
     @Throws(ServletException::class, IOException::class)
-    override fun doGet(request: HttpServletRequest, response: HttpServletResponse) {
-        if (request.session.getAttribute("empId") == null) {
-            response.sendRedirect("LoginServlet")
-            return
-        }
+    override fun doGet(request: HttpServletRequest, response: HttpServletResponse) =
         request.getRequestDispatcher("/WEB-INF/jsp/employee/E101/register.jsp").forward(request, response)
-    }
 
     @Throws(ServletException::class, IOException::class)
     override fun doPost(request: HttpServletRequest, response: HttpServletResponse) {
         request.characterEncoding = "UTF-8"
         val empId = request.getParameter("empId")
-        val fName = request.getParameter("fName")
-        val lName = request.getParameter("lName")
-        val empPasswd = request.getParameter("empPasswd")
-        val empRole = request.getParameter("empRole").toInt()
         if (nullEmployee(empId)) {
-            insertAccount(Account(empId, fName, lName, empPasswd, empRole))
-            println("$empId $fName $lName $empPasswd $empRole")
+            insertAccount(Account(
+                empId,
+                request.getParameter("fName"),
+                request.getParameter("lName"),
+                request.getParameter("empPasswd"),
+                request.getParameter("empRole").toInt()
+            ))
             request.getRequestDispatcher("/WEB-INF/jsp/employee/E101/registrationComplete.jsp").forward(request, response)
         } else {
-            request.getRequestDispatcher("/WEB-INF/jsp/employee/E101/registrationError.jsp").forward(request, response)
+            response.contentType = "text/html; charset=UTF-8"
+            response.writer.println("IDが一致しています。")
         }
     }
 
-    fun nullEmployee(empid: String?): Boolean {
+    private fun nullEmployee(empid: String?): Boolean {
         var empSQLId: String? = null
         try {
             DriverManager.getConnection("jdbc:mysql://localhost/r4a105", "r4a105", "password").use { connection ->
                 val pStmt = connection.prepareStatement("SELECT * FROM employee WHERE empid = ?")
                 pStmt.setString(1, empid)
                 val resultSet = pStmt.executeQuery()
-                if (resultSet.next()) {
-                    empSQLId = resultSet.getString("empid")
-                }
+                if (resultSet.next()) empSQLId = resultSet.getString("empid")
             }
         } catch (e: SQLException) {
             e.printStackTrace()
@@ -57,7 +51,7 @@ class RegisterServlet : HttpServlet() {
         return empSQLId == null
     }
 
-    fun insertAccount(account: Account) {
+    private fun insertAccount(account: Account) {
         try {
             DriverManager.getConnection("jdbc:mysql://localhost/r4a105", "r4a105", "password").use { connection ->
                 val preparedStatement =

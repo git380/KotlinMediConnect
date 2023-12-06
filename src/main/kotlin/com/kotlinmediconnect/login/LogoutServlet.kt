@@ -7,7 +7,6 @@ import javax.servlet.http.HttpServlet
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
-
 @WebServlet("/LogoutServlet")
 class LogoutServlet : HttpServlet() {
     @Throws(ServletException::class, IOException::class)

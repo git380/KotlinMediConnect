@@ -8,6 +8,6 @@
 <body>
 <h1>従業員更新完了</h1>
 <p>変更されました。</p>
-<a href="/Kadai1Administrator/WelcomeServlet">トップへ</a>
+<a href="WelcomeServlet">トップへ</a>
 </body>
 </html>
